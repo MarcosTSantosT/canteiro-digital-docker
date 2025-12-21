@@ -1,4 +1,7 @@
-# 📊 APP Carteira Digital
+<p align="center">
+  <img src="./frontend/public/favicon-book-open.svg" width="120" height="120">
+</p>
+<h1 align="center">APP Carteira Digital</h1>
 
 > Sistema para pesquisa e integração de informações da base de obras públicas da União mantida e disponibilizada pela Caixa Econômica Federal.
 
