@@ -1,0 +1,6 @@
+Mapa de Funções de autenticação/autorização:
+AuthContext.js: Apenas a definição da "caixa" (Contexto).
+AuthProvider.jsx: O "motor". É quem realmente salva o usuário no estado do React e lê o token do disco. É aqui que você deve garantir que a role entre no objeto user.
+useAuth.js: O "atalho" para os outros componentes pegarem os dados do motor.
+OAuthCallback.jsx: A "porta de entrada". Pega o token da URL que o Flask enviou e entrega para o login() do motor.
+authFetch.js: O "ajudante". Garante que toda vez que você pedir algo ao Backend, o token vá junto no cabeçalho.

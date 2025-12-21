@@ -1,0 +1,244 @@
+# ============================================
+# BACKEND - .gitignore
+# Python Flask Application
+# ============================================
+
+# ====== PYTHON ======
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Flask stuff
+instance/
+.webassets-cache
+flask_session/
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# ====== DATABASE ======
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+instance/*.db
+app.db
+
+# ====== UPLOADS & DATA ======
+# User uploaded files
+uploads/
+app/uploads/
+*.csv
+data/*.csv
+!data/dadosBasicos_mini.csv  # Exemplo: manter arquivo pequeno para testes
+
+# ====== LOGS ======
+# Log files
+*.log
+logs/
+*.out
+
+# ====== IDE / EDITORS ======
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ====== OS ======
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+
+# Linux
+*~
+
+# ====== DOCKER ======
+# Docker
+*.dockerignore
+
+# ====== SECURITY ======
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+
+# Secrets
+secrets/
+*.secret
+
+# ====== TEMPORARY FILES ======
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ====== SPECIFIC TO THIS PROJECT ======
+# Flask session files
+flask_session/
+
+# Uploaded comentarios
+uploads/comentarios/*
+!uploads/comentarios/.gitkeep
+
+# Data files (exceto exemplos pequenos)
+data/base_atualizada.csv
+data/Base_Caixa_Uploaded.csv
+data/dadosBasicos.csv
+data/dadosBasicos_medio.csv

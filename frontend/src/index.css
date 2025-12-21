@@ -1,0 +1,67 @@
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9fafb;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  gap: 0;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.left-column {
+  flex-shrink: 0;
+}
+
+.center-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+  padding: 0 1rem;
+}
+
+.right-column {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.panel-container {
+  overflow: hidden;
+}
+
+/* ============================================
+   RESET GLOBAL - PREVENIR SCROLLBAR
+   ============================================ */
+   
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;  /* ✅ Previne scroll no HTML */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;  /* ✅ Previne scroll no BODY */
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;  /* ✅ Previne scroll no ROOT */
+}

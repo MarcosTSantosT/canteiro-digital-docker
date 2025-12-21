@@ -1,0 +1,520 @@
+/* ========================================
+   PROCESSOS MODAL - CSS COMPLETO
+   Modal + Botão Processos
+   ======================================== */
+
+/* ========================================
+   BOTÃO PROCESSOS - AZUL (PRIMARY)
+   ======================================== */
+
+.comments-btn-primary {
+  background: #3b82f6 !important;
+  color: white !important;
+  border: 2px solid #3b82f6 !important;
+}
+
+.comments-btn-primary:hover:not(:disabled) {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+.comments-btn-primary:active:not(:disabled) {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+  transform: translateY(0);
+}
+
+.comments-btn-primary:disabled {
+  background: #93c5fd !important;
+  border-color: #93c5fd !important;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.comments-btn-primary .comments-btn-icon {
+  color: white !important;
+}
+
+/* ========================================
+   MODAL - OVERLAY
+   ======================================== */
+
+.processos-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Container do Modal */
+.processos-modal-content {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   HEADER DO MODAL
+   ======================================== */
+
+.processos-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.processos-modal-title-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.processos-modal-icon {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.processos-modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.processos-modal-convenio {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  background: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  margin-right: 1rem;
+}
+
+.processos-modal-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+}
+
+.processos-modal-close:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+/* ========================================
+   BODY DO MODAL
+   ======================================== */
+
+.processos-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.processos-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.processos-loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.processos-loading p {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* ========================================
+   EMPTY STATE
+   ======================================== */
+
+.processos-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.processos-empty-icon {
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+.processos-empty-text {
+  color: #6b7280;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ========================================
+   LISTA DE PROCESSOS
+   ======================================== */
+
+.processos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ========================================
+   CARD DE PROCESSO
+   ======================================== */
+
+.processo-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.processo-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+/* Header do Card */
+.processo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.processo-numero {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Status Badge */
+.processo-status {
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Status Variations */
+.processo-status.ativo,
+.processo-status.em-andamento,
+.processo-status.aberto {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.processo-status.concluído,
+.processo-status.finalizado,
+.processo-status.arquivado {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.processo-status.suspenso,
+.processo-status.cancelado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.processo-status.pendente,
+.processo-status.em-análise {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Sem status */
+.processo-status:not([class*=" "]) {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* ========================================
+   GRID DE INFORMAÇÕES
+   ======================================== */
+
+.processo-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ========================================
+   CAMPOS
+   ======================================== */
+
+.processo-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.processo-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.processo-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+  word-break: break-word;
+}
+
+/* Valores vazios */
+.processo-value:empty::after {
+  content: '-';
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* ========================================
+   OBSERVAÇÕES
+   ======================================== */
+
+.processo-observacoes {
+  background: #f9fafb;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  border-left: 3px solid #3b82f6;
+}
+
+.processo-observacoes .processo-label {
+  margin-bottom: 0.5rem;
+}
+
+.processo-observacoes-text {
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+/* Scrollbar customizada */
+.processo-observacoes-text::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.processo-observacoes-text::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 0.125rem;
+}
+
+.processo-observacoes-text::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 0.125rem;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.processos-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.processos-count {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .processos-modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .processos-modal-content {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+
+  .processos-modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .processos-modal-convenio {
+    margin-right: 0;
+    order: -1;
+    width: 100%;
+    text-align: center;
+  }
+
+  .processos-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .processos-modal-body {
+    padding: 1rem;
+  }
+
+  .processo-card-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .processo-card {
+    padding: 1rem;
+  }
+
+  .processo-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* ========================================
+   SCROLLBAR DO MODAL BODY
+   ======================================== */
+
+.processos-modal-body::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.processos-modal-body::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 0.25rem;
+}
+
+.processos-modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 0.25rem;
+}
+
+.processos-modal-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ========================================
+   ANIMAÇÕES
+   ======================================== */
+
+.processo-card {
+  animation: fadeInCard 0.3s ease-out backwards;
+}
+
+.processo-card:nth-child(1) { animation-delay: 0s; }
+.processo-card:nth-child(2) { animation-delay: 0.05s; }
+.processo-card:nth-child(3) { animation-delay: 0.1s; }
+.processo-card:nth-child(4) { animation-delay: 0.15s; }
+.processo-card:nth-child(5) { animation-delay: 0.2s; }
+
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   ACESSIBILIDADE
+   ======================================== */
+
+.processos-modal-close:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}

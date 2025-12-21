@@ -1,0 +1,40 @@
+.vertical-resizer {
+  width: 16px;
+  cursor: col-resize;
+  background-color: transparent;
+  position: relative;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.vertical-resizer.disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.horizontal-resizer {
+  height: 16px;
+  cursor: row-resize;
+  background-color: transparent;
+  position: relative;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.vertical-resizer .resizer-handle {
+  display: none;
+}
+
+.horizontal-resizer .resizer-handle {
+  display: none;
+}
+
+.resizer-handle {
+  display: none;
+}
+
+.resizer-icon {
+  display: none;
+}

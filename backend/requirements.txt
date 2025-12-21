@@ -1,0 +1,34 @@
+# --------------------------
+# Framework web
+# --------------------------
+Flask         # Framework web leve para criar APIs e aplicações web
+Flask-Cors   # Permite o CORS (Cross-Origin Resource Sharing) no Flask
+Flask-SQLAlchemy  # ORM para integrar Flask com bancos de dados SQL
+
+# --------------------------
+# Banco de dados
+# --------------------------
+psycopg2-binary  # Driver PostgreSQL para Python
+
+# --------------------------
+# Manipulação de dados
+# --------------------------
+pandas       # Manipulação e análise de dados em DataFrames
+chardet      # Detecção de encoding de arquivos, útil para CSVs
+
+# --------------------------
+# Autenticação / Segurança
+# --------------------------
+Authlib      # Implementação de OAuth 1.0, 2.0 e OpenID Connect
+PyJWT        # Criação e validação de tokens JWT
+python-dotenv # configurações de ambiente 
+
+# --------------------------
+# Requisições HTTP
+# --------------------------
+requests     # Cliente HTTP para fazer requisições a APIs externas
+urllib3      # Biblioteca de baixo nível usada por requests para HTTP
+certifi    # Certificados SSL confiáveis para conexões HTTPS
+
+ # ?
+ Flask-Session

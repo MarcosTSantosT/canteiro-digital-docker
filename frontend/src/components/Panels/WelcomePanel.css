@@ -1,0 +1,252 @@
+/* ============================================
+   WELCOME PANEL - CSS INDEPENDENTE
+   Data: 2025-12-19
+   ============================================ */
+
+/* ==========================================
+   PAINEL PRINCIPAL
+   ========================================== */
+.welcome-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  background: #c3cfe2;
+  overflow-y: auto;
+}
+
+/* ==========================================
+   CARROSSEL - CONTAINER
+   ========================================== */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+/* ==========================================
+   CARROSSEL - CARD
+   ========================================== */
+.carousel-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.carousel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================
+   CARROSSEL - ÍCONE
+   ========================================== */
+.carousel-icon-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.carousel-card:hover .carousel-icon-wrapper {
+  transform: scale(1.05);
+}
+
+/* ==========================================
+   CARROSSEL - CONTEÚDO
+   ========================================== */
+.carousel-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.carousel-description {
+  font-size: 1.125rem;
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+/* ==========================================
+   CARROSSEL - FEATURES
+   ========================================== */
+.carousel-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.carousel-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #334155;
+  text-align: left;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.carousel-feature-item:hover {
+  background: #f1f5f9;
+}
+
+.feature-bullet {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================
+   CARROSSEL - CONTROLES
+   ========================================== */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Botões de navegação (anterior/próximo) */
+.carousel-button {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+}
+
+.carousel-button:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+  transform: scale(1.1);
+}
+
+.carousel-button:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================
+   CARROSSEL - INDICADORES (DOTS)
+   ========================================== */
+.carousel-indicators {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.carousel-dot:hover {
+  background: #94a3b8;
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background: #3b82f6;
+  width: 32px;
+  border-radius: 6px;
+}
+
+/* ==========================================
+   CARROSSEL - CONTADOR
+   ========================================== */
+.carousel-counter {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+@media (max-width: 768px) {
+
+  .carousel-card {
+    padding: 2rem 1.5rem;
+    min-height: 500px;
+  }
+
+  .carousel-title {
+    font-size: 1.5rem;
+  }
+
+  .carousel-description {
+    font-size: 1rem;
+  }
+
+  .carousel-features {
+    grid-template-columns: 1fr;
+  }
+
+  .carousel-icon-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .carousel-button {
+    width: 40px;
+    height: 40px;
+  }
+}

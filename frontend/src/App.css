@@ -1,0 +1,83 @@
+/* ============================================
+   APP CONTAINER - 100VH SEM SCROLLBAR
+   ============================================ */
+
+.app-container {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;  /* ✅ Garante limite */
+  display: flex;
+  flex-direction: column;
+  background-color: #f9fafb;
+  overflow: hidden;  /* ✅ Esconde overflow */
+  position: relative;
+}
+
+/* ============================================
+   MAIN CONTENT - ÁREA CENTRAL
+   ============================================ */
+
+.main-content {
+  flex: 1 1 0%;  /* ✅ flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+  display: flex;
+  gap: 0;
+  padding: 1rem;
+  overflow: hidden;
+  min-height: 0;  /* ✅ CRÍTICO: Permite encolher */
+  position: relative;
+}
+
+/* ============================================
+   COLUNAS
+   ============================================ */
+
+.left-column {
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.center-column {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;  /* ✅ Permite encolher horizontalmente */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.right-column {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ============================================
+   PAINÉIS
+   ============================================ */
+
+.panel-container {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.full-width-panel {
+  flex: 1 1 0%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  min-height: 0;  /* ✅ CRÍTICO: Permite encolher */
+  height: 100%;
+}

@@ -1,0 +1,25 @@
+/* ============================================
+   COMMENTS PANEL - CSS OVERRIDE
+   Sobrescreve estilos do Panels.css
+   Data: 2025-12-20
+   ============================================ */
+
+/* Sobrescrever degradê do item selecionado com cor única */
+.comment-item.selected {
+  background: #eff6ff !important;  /* Cor mais clara do degradê */
+  border-color: #3b82f6 !important;
+  border-left: 4px solid #3b82f6 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Hover no item selecionado também cor única */
+.comment-item.selected:hover {
+  background: #dbeafe !important;  /* Um pouco mais escuro no hover */
+  border-color: #3b82f6 !important;
+}
+
+/* Garantir que não há gradiente */
+.comment-item.selected,
+.comment-item.selected:hover {
+  background-image: none !important;
+}

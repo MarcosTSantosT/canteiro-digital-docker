@@ -1,0 +1,312 @@
+/* ========================================
+   CARTEIRAPANEL - FILTROS AVANÇADOS
+   ======================================== */
+
+/* Botões de ação na busca */
+.carteira-search-btn {
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+
+.carteira-search-btn:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.carteira-search-btn:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+.carteira-filter-toggle-btn {
+  padding: 0.5rem;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+
+.carteira-filter-toggle-btn:hover {
+  background: #e5e7eb;
+  border-color: #3b82f6;
+}
+
+.carteira-clear-btn {
+  padding: 0.5rem;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+
+.carteira-clear-btn:hover {
+  background: #fecaca;
+  border-color: #dc2626;
+}
+
+/* Container de filtros avançados - SEM SCROLL PRÓPRIO */
+.carteira-advanced-filters {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Seções de filtros */
+.filters-section {
+  margin-bottom: 1.5rem;
+}
+
+.filters-section:last-of-type {
+  margin-bottom: 1rem;
+}
+
+.filters-section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 0 0 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Grid de filtros */
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Item de filtro individual */
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filter-item label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.filter-item input,
+.filter-item select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-item select:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Ações de filtros */
+.filters-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-primary {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .filters-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .carteira-advanced-filters {
+    padding: 1rem;
+  }
+
+  .filters-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  .carteira-search-wrapper {
+    flex-wrap: wrap;
+  }
+
+  .carteira-search-btn,
+  .carteira-filter-toggle-btn,
+  .carteira-clear-btn {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Ajustes no wrapper de busca */
+.carteira-search-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* Reduzir espaço entre busca e filtros/tabela */
+.carteira-search-section {
+  margin-bottom: 0.25rem;
+}
+
+/* Animação */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================
+   CLASSES ADICIONAIS - REMOVENDO INLINE
+   ========================================== */
+
+/* Container principal */
+.carteira-panel-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Botão com margin-left auto */
+.carteira-btn-auto-margin {
+  margin-left: auto;
+}
+
+/* Botão com margin-left pequeno */
+.carteira-btn-margin-left {
+  margin-left: 0.5rem;
+}
+
+/* Search section com flex-shrink */
+.carteira-search-section-flex {
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Table container */
+.carteira-table-container {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: white;
+}
+
+/* Pagination container */
+.carteira-pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  flex-shrink: 0;
+}
+
+/* Page info */
+.carteira-page-info {
+  font-weight: 500;
+  color: #374151;
+  margin-right: 0.5rem;
+}
+
+/* Pagination controls */
+.carteira-pagination-controls {
+  display: flex;
+  gap: 0.5rem;
+}

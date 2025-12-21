@@ -1,0 +1,123 @@
+APPCARTEIRADIGITAL
+
+-backend
+│   .env
+│   config.py
+│   Dockerfile
+│   requirements.txt
+│   run.py
+│
+├───app
+│   │   routes.py
+│   │   __init__.py
+│   │
+│   ├───services
+│   │       Api.js
+│   │       db1_service.py
+│   │       db2_service.py
+│   │       db3_service.py
+│   │       db4_service.py
+│   │       __init__.py
+│   │
+│   └───uploads
+│       └───comentarios
+│
+├───data
+│
+├───flask_session
+│
+├───instance
+│       app.db
+│
+├───sql_schema
+│       01_create_tables.sql
+│       02_create_indexes.sql
+│       03_seed_data.sql
+│
+└───uploads
+    └───comentarios
+
+-frontend
+├── node_modules  
+├── public  
+    favicon-book-open.svg
+    index.html  
+├── src
+│   │   App.css
+│   App.jsx
+│   index.css
+│   index.js
+│   main.jsx
+│   
+├───assets
+│       react.svg
+│       
+├───components
+│   ├───Footer
+│   │       Footer.css
+│   │       Footer.jsx
+│   │
+│   ├───Header
+│   │       Header.css
+│   │       Header.jsx
+│   │
+│   ├───Panels
+│   │       AtualizacoesModal.css
+│   │       AtualizacoesModal.jsx
+│   │       AtualizacoesPanel.css
+│   │       AtualizacoesPanel.jsx
+│   │       CarteiraPanel.css
+│   │       CarteiraPanel.jsx
+│   │       ComentariosPanel.css
+│   │       ComentariosPanel.jsx
+│   │       MenuLateralPanel.css
+│   │       MenuLateralPanel.jsx
+│   │       OperacaoPanel.css
+│   │       OperacaoPanel.jsx
+│   │       Panels.css
+│   │       ProcessosModal.css
+│   │       ProcessosModal.jsx
+│   │       ResizablePanel.css
+│   │       ResizablePanel.jsx
+│   │       UploadPanel.css
+│   │       UploadPanel.jsx
+│   │       WelcomePanel.css
+│   │       WelcomePanel.jsx
+│   │
+│   ├───Resizer
+│   │       HorizontalResizer.jsx
+│   │       Resizer.css
+│   │       Resizer.jsx
+│   │       VerticalResizer.jsx
+│   │
+│   ├───UI
+│   │       SourceItem.jsx
+│   │       UI.css
+│   │
+│   └───UserMenu
+│           UserMenu.css
+│           UserMenu.jsx
+│
+├───context
+│       AuthContext.jsx
+│       AuthProvider.jsx
+│       useAuth.js
+│
+├───pages
+│       OAuthCallback.jsx
+│
+└───utils
+│   App.css
+│   App.jsx
+│   index.css
+│   index.js
+│   main.jsx
+│   .gitignore
+│   eslint.config.js
+│   index.html
+│   package-lock.json
+│   package.json
+│   postcss.config.js
+│   tailwind.config.js
+│   vite.config.js
+- dockercompose.yml

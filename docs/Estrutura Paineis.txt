@@ -1,0 +1,12 @@
+App.jsx
+├── Sidebar (Menu Lateral)
+│   ├── Início → WelcomePanel
+│   ├── Pesquisar → SearchPanel
+│   ├── Carteira Completa → CarteiraPanel
+│   ├── Visualizar Alterações → AlteracoesTablePanel ← AQUI
+│   └── Atualizar Base → DatabasePanel
+│
+└── Painéis Laterais (só aparecem em algumas telas)
+    ├── CommentsPanel (lado direito)
+    ├── DetailsPanel (lado direito)
+    └── AlertsPanel (lado direito)
