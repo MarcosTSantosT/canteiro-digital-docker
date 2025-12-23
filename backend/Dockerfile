@@ -16,7 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 5. Copie todo o resto do código do backend para o contêiner
 COPY . .
 
-
 ############################################################
 # Rodando local em desenvolvimento
 ############################################################
