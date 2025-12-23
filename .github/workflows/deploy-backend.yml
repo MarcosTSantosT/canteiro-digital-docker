@@ -23,7 +23,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./backend        # Entra na pasta backend para o build
-          file: ./backend/Dockerfile # Local do manual de instruções
+          #file: ./backend/Dockerfile # Local do manual de instruções
           push: true
           tags: marcostsantost/app-carteira-backend:latest
           platforms: linux/amd64     # Garante que funcione no Azure
