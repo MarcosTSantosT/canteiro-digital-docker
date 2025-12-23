@@ -1,6 +1,7 @@
 # Ponto de Entrada
 # executar: python run.py
-
+# Importante não usar app.run() em app/__init__ para evitar loop infinito
+# Em produção esse arquivo não é usado, apenas em desenvolvimento
 
 from app import create_app # função definida em app/__init__.py
 
@@ -13,3 +14,5 @@ if __name__ == '__main__':
 
 # Acessar aplicação backend por http://localhost:5000
 # Necessário estar com PostgreSQL rodando
+
+# Frontend (React Vite) roda em outro servidor (http://localhost:5173)

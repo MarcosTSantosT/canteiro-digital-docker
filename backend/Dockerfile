@@ -16,10 +16,28 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 5. Copie todo o resto do código do backend para o contêiner
 COPY . .
 
-# 6. Exponha a porta que seu app Flask usa (ex: 5000)
-# (Mude se for diferente no seu 'run.py' ou 'config.py')
-EXPOSE 5000
 
+############################################################
+# Rodando local em desenvolvimento
+############################################################
+# Descomente as linhas abaixo para rodar localmente em desenvolvimento
+# 6. Exponha a porta que seu app Flask usa (ex: 5000)
+# EXPOSE 5000
 # 7. Defina o comando para iniciar sua aplicação
-# (Seu 'run.py' parece ser o ponto de entrada)
-CMD ["python", "run.py"]
+# CMD ["python", "run.py"]
+
+
+############################################################
+# Rodando AZURE (produção)
+############################################################
+# Descomente as linhas abaixo para rodar localmente em desenvolvimento
+# 6. Exponha a porta que seu app Flask usa (ex: 5000)
+EXPOSE 8000
+# 7. Defina o comando para iniciar sua aplicação
+#CMD ["gunicorn", "-b", "0.0.0.0:8000", "wsgi:app"]
+##CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120 wsgi:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "120", "wsgi:app"]
+
+# PARA CONSTRUIR E RODAR LOCALMENTE:
+# docker build -t imagem .
+# docker run -p 5000:8000 imagem

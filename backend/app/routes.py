@@ -34,7 +34,8 @@ def index():
     """
     Rota raiz para teste de roteamento e conectividade com o PostgreSQL.
     """
-    db1_service.testar_conexao_postgreSQL()
+    # Se queiser testa a conexão com o banco de dados: 
+    #db1_service.testar_conexao_postgreSQL()
     return "Teste de roteamento: Página inicial (/)"
 
 
