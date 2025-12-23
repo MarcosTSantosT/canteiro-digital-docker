@@ -1,3 +1,0 @@
-As informações apresentadas na tela informações 
-1-Poderiam trazer o valor do investimento na tabela
-2-Poderiam ser cruzadas (join) com relevância ou processo possibilitando outros filtros

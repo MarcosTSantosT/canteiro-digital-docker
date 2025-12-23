@@ -421,6 +421,7 @@ def buscar_convenios():
 # ------------------------------------------------------------------------------
 @bp.route("/api/operacao/<string:convenio_siafi>", methods=["GET"])
 # TESTE: http://localhost:5000/api/operacao/873650
+# https://app-canteiro-digital-backend.azurewebsites.net/api/operacao/873650
 def get_convenio(convenio_siafi):
     """
     Retorna os dados completos de um convênio, incluindo:

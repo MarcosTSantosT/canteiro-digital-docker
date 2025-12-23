@@ -6,6 +6,8 @@ import ProcessosModal from './ProcessosModal';
 import AlertsModal from './AtualizacoesModal';
 import './OperacaoPanel.css';
 
+import { API_URL } from '.backend/app/services/api';
+
 const SearchPanel = ({ onOperacaoSelecionada }) => {
   const [valorBusca, setValorBusca] = useState('');
   const [mensagem, setMensagem] = useState('');
@@ -35,8 +37,8 @@ const SearchPanel = ({ onOperacaoSelecionada }) => {
     setDadosConvenio(null);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/operacao/${valorBusca}`);
-      
+      const response = await fetch(`${API_URL}/api/operacao/${valorBusca}`);
+      //const response = await fetch(`http://localhost:5000/api/operacao/${valorBusca}`);      
       if (!response.ok) {
         throw new Error('Operação não encontrada');
       }
