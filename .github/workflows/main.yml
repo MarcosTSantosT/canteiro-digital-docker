@@ -1,14 +1,12 @@
-name: Build and Deploy to Azure
+name: Build and Deploy
 
 on:
   push:
-    branches:
-      - main  # Dispara o build sempre que você der push na main
+    branches: [ "main" ]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,17 +17,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push container image
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: marcostsantost/app-carteira-backend:v1
-          platforms: linux/amd64  # FORÇA A ARQUITETURA CORRETA PARA O AZURE
+          tags: marcostsantost/app-carteira-backend:latest
+          platforms: linux/amd64 # Força a arquitetura para o Azure
 
       - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: 'app-canteiro-digital-backend '
+          app-name: 'app-canteiro-digital-backend'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: 'marcostsantost/app-carteira-backend:v1'
+          images: 'marcostsantost/app-carteira-backend:latest'
