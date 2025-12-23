@@ -3,6 +3,7 @@ import { ChevronLeft, Search, Briefcase, Database, LogIn, AlertTriangle } from '
 import ResizablePanel from './ResizablePanel';
 import SourceItem from '../UI/SourceItem';
 import './MenuLateralPanel.css';
+import { API_URL } from '../../services/Api';
 
 const SourcePanel = ({ onCollapse, onItemClick }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -29,10 +30,10 @@ const SourcePanel = ({ onCollapse, onItemClick }) => {
     // Se for o botão de login (id 5), redireciona para a página de login
     if (source.id === 5) {
       console.log('🔷 [SourcePanel] É botão de LOGIN!');
-      console.log('🔷 [SourcePanel] Redirecionando para:', "http://localhost:5000/api/auth/login");
+      console.log('🔷 [SourcePanel] Redirecionando para:', `${API_URL}/api/auth/login`);
       
       try {
-        window.location.replace("http://localhost:5000/api/auth/login");
+        window.location.replace(`${API_URL}/api/auth/login`);
         console.log('🔷 [SourcePanel] Redirecionamento executado');
       } catch (error) {
         console.error('❌ [SourcePanel] Erro ao redirecionar:', error);

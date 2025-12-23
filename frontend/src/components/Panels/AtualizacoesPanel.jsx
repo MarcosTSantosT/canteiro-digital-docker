@@ -3,6 +3,7 @@ import { AlertTriangle, Search, Download, ChevronDown, ChevronUp } from 'lucide-
 import * as XLSX from 'xlsx';
 import ResizablePanel from './ResizablePanel';
 import './AtualizacoesPanel.css';
+import { API_URL } from '../../services/Api';
 
 const AlteracoesTablePanel = ({ onSelectOperacao }) => {
   const [alteracoesData, setAlteracoesData] = useState([]);
@@ -104,7 +105,7 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
     const loadInitialData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("http://localhost:5000/api/alteracoes");
+        const response = await fetch(`${API_URL}/api/alteracoes`);
         
         if (!response.ok) {
           throw new Error("Erro ao carregar dados iniciais");
@@ -421,7 +422,7 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
         }
       }
 
-      const response = await fetch("http://localhost:5000/api/atualizacoes_filtros_paginacao", {
+      const response = await fetch(`${API_URL}/api/atualizacoes_filtros_paginacao`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -454,7 +455,7 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
     setIsExporting(true);
     
     try {
-      const response = await fetch("http://localhost:5000/api/alteracoes");
+      const response = await fetch(`${API_URL}/api/alteracoes`);
       
       if (!response.ok) {
         throw new Error('Erro ao buscar carteira completa');
@@ -587,7 +588,7 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
 
   const handleRowClick = async (item) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/operacao/${item.convenio_siafi}`);
+      const response = await fetch(`${API_URL}/api/operacao/${item.convenio_siafi}`);
       if (!response.ok) {
         throw new Error('Operação não encontrada');
       }

@@ -3,7 +3,7 @@ import { Briefcase, Download, ChevronDown, ChevronUp } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import ResizablePanel from './ResizablePanel';
 import './CarteiraPanel.css';
-// import './Panels.css';  // Removido - usando apenas CarteiraPanel.css
+import { API_URL } from '../../services/Api';
 
 const CarteiraPanel = ({ onSelectOperacao }) => {
   const [carteiraData, setCarteiraData] = useState([]);
@@ -214,7 +214,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
   React.useEffect(() => {
     const fetchConvenentes = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/convenentes");
+        const response = await fetch(`${API_URL}/api/convenentes`);
         const data = await response.json();
         setConvenentes(data);
       } catch (error) {
@@ -224,7 +224,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
 
     const fetchUfs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/ufs");
+        const response = await fetch(`${API_URL}/api/ufs`);
         const data = await response.json();
         setUfs(data);
       } catch (error) {
@@ -234,7 +234,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
 
     const fetchSituacoesContrato = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/situacoes-contrato");
+        const response = await fetch(`${API_URL}/api/situacoes-contrato`);
         const data = await response.json();
         setSituacoesContrato(data);
       } catch (error) {
@@ -244,7 +244,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
 
     const fetchSituacoesObra = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/situacoes-obra");
+        const response = await fetch(`${API_URL}/api/situacoes-obra`);
         const data = await response.json();
         setSituacoesObra(data);
       } catch (error) {
@@ -267,7 +267,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/municipios?uf=${filters.uf}`);
+        const response = await fetch(`${API_URL}/api/municipios?uf=${filters.uf}`);
         const data = await response.json();
         setMunicipios(data);
       } catch (error) {
@@ -340,7 +340,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
     const loadInitialData = async () => {
       setIsSearching(true);
       try {
-        const response = await fetch("http://localhost:5000/api/operacoes_base_completa");
+        const response = await fetch(`${API_URL}/api/operacoes_base_completa`);
         
         if (!response.ok) {
           throw new Error("Erro ao carregar dados iniciais");
@@ -397,7 +397,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
         page_size: 1  // Apenas para saber o total
       };
 
-      const checkResponse = await fetch("http://localhost:5000/api/operacoes_fitros_paginacao", {
+      const checkResponse = await fetch(`${API_URL}/api/operacoes_fitros_paginacao`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -426,7 +426,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
           page_size: pageSize
         };
         
-        const response = await fetch("http://localhost:5000/api/operacoes_fitros_paginacao", {
+        const response = await fetch(`${API_URL}/api/operacoes_fitros_paginacao`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -445,8 +445,8 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
       } else {
         // PAGINAÇÃO LOCAL - Buscar TODOS os registros
         console.log(`⚡ Modo LOCAL: ${totalRecordsFound} registros (poucos)`);
-        
-        const response = await fetch("http://localhost:5000/api/operacoes_fitros_paginacao", {
+
+        const response = await fetch(`${API_URL}/api/operacoes_fitros_paginacao`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -671,7 +671,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
     setIsExporting(true);
     
     try {
-      const response = await fetch("http://localhost:5000/api/operacoes_base_completa");
+      const response = await fetch(`${API_URL}/api/operacoes_base_completa`);
       
       if (!response.ok) {
         throw new Error('Erro ao buscar carteira completa');
@@ -830,7 +830,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
             page_size: pageSize
           };
           
-          const response = await fetch("http://localhost:5000/api/operacoes_fitros_paginacao", {
+          const response = await fetch(`${API_URL}/api/operacoes_fitros_paginacao`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -946,7 +946,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
 
   const handleRowClick = async (item) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/operacao/${item.convenio_siafi}`);
+      const response = await fetch(`${API_URL}/api/operacao/${item.convenio_siafi}`);
       if (!response.ok) throw new Error('Operação não encontrada');
       const data = await response.json();
       

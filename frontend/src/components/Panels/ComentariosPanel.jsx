@@ -5,6 +5,7 @@ import useAuth from '../../context/useAuth';
 import ResizablePanel from './ResizablePanel';
 import './Panels.css';
 import './ComentariosPanel.css';  // 
+import { API_URL } from '../../services/Api';
 
 const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) => {
   const { user, isAuthenticated } = useAuth();
@@ -67,7 +68,7 @@ const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) =>
   const carregarArquivosExistentes = async (comentarioId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/comentarios/${comentarioId}/arquivos`
+        `${API_URL}/api/comentarios/${comentarioId}/arquivos`
       );
       if (response.ok) {
         const data = await response.json();
@@ -123,7 +124,7 @@ const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) =>
       const id = getComentarioId(comentario);
       
       const response = await fetch(
-        `http://localhost:5000/api/comentarios/${id}/arquivo/${arquivoId}`,
+        `${API_URL}/api/comentarios/${id}/arquivo/${arquivoId}`,
         {
           method: 'DELETE',
           headers: {
@@ -157,7 +158,7 @@ const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) =>
         formData.append('convenio_siafi', convenioSiafi);
 
         const response = await fetch(
-          `http://localhost:5000/api/comentarios/${comentarioId}/arquivo`,
+          `${API_URL}/api/comentarios/${comentarioId}/arquivo`,
           {
             method: 'POST',
             headers: {
@@ -197,7 +198,7 @@ const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) =>
 
   const downloadArquivo = (arquivoId) => {
     window.open(
-      `http://localhost:5000/api/arquivo/${arquivoId}/download`,
+      `${API_URL}/api/arquivo/${arquivoId}/download`,
       '_blank'
     );
   };
@@ -286,7 +287,7 @@ const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) =>
 
     try {
       const r = await fetch(
-        `http://localhost:5000/api/operacao/${encodeURIComponent(conv)}/comentarios`,
+        `${API_URL}/api/operacao/${encodeURIComponent(conv)}/comentarios`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -337,7 +338,7 @@ const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) =>
     try {
       const token = localStorage.getItem('jwt_token');
       const r = await fetch(
-        `http://localhost:5000/api/operacao/${encodeURIComponent(conv)}/comentarios/${comentarioId}`,
+        `${API_URL}/api/operacao/${encodeURIComponent(conv)}/comentarios/${comentarioId}`,
         {
           method: "PUT",
           headers: {
@@ -389,7 +390,7 @@ const CommentsPanel = ({ convenioSiafi, comentarios, recarregarComentarios }) =>
     try {
       const token = localStorage.getItem('jwt_token');
       const r = await fetch(
-        `http://localhost:5000/api/operacao/${encodeURIComponent(conv)}/comentarios/${comentarioId}`,
+        `${API_URL}/api/operacao/${encodeURIComponent(conv)}/comentarios/${comentarioId}`,
         {
           method: "DELETE",
           headers: {

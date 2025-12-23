@@ -3,6 +3,7 @@ import { Database, Upload, CheckCircle, AlertCircle, FileText, X, Info } from 'l
 import useAuth from '../../context/useAuth';
 import ResizablePanel from './ResizablePanel';
 import './UploadPanel.css';
+import { API_URL } from '../../services/Api';
 
 const DatabasePanel = () => {
   const { user, isAuthenticated } = useAuth();
@@ -76,8 +77,8 @@ const DatabasePanel = () => {
 
     try {
       const token = localStorage.getItem('jwt_token');
-      
-      const response = await fetch("http://localhost:5000/api/upload_csv", {
+
+      const response = await fetch(`${API_URL}/api/upload_csv`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}`

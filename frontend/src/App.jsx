@@ -13,6 +13,7 @@ import CommentsPanel from './components/Panels/ComentariosPanel';
 import AlteracoesTablePanel from './components/Panels/AtualizacoesPanel';
 import WelcomePanel from './components/Panels/WelcomePanel';
 
+import { API_URL } from './services/Api';
 
 function AppContent() {
   const containerRef = useRef(null);
@@ -70,7 +71,7 @@ const recarregarComentarios = async () => {
     if (!convenioSiafi) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/operacao/${convenioSiafi}`);
+      const response = await fetch(`${API_URL}/api/operacao/${convenioSiafi}`);
       if (response.ok) {
         const data = await response.json();
         setComentarios(data.comentarios || []);
