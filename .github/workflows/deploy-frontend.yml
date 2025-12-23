@@ -1,10 +1,10 @@
-name: Deploy Backend
+name: Deploy Frontend
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - 'backend/**' # Só dispara se você mexer na pasta do backend
+      - 'frontend/**'
 workflow_dispatch: # Permite disparar o deploy manualmente pelo botão no GitHub
 
 jobs:
@@ -20,15 +20,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Backend Image
+      - name: Build and push Frontend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend        # Entra na pasta backend para o build
-          file: ./backend/Dockerfile # Local do manual de instruções
+          context: ./frontend
+          file: ./frontend/Dockerfile
           push: true
-          tags: marcostsantost/app-carteira-backend:latest
-          platforms: linux/amd64     # Garante que funcione no Azure
-
+          tags: marcostsantost/app-carteira-frontend:latest
+          platforms: linux/amd64
+          # Injeta a URL do Backend no momento do Build
+          build-args: |
+            VITE_API_URL=https://app-canteiro-digital-backend.azurewebsites.net
+            
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -37,5 +40,6 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'app-canteiro-digital-backend'
-          images: 'marcostsantost/app-carteira-backend:latest'
+          # Nome exato do seu Web App de Front
+          app-name: 'app-canteiro-digital'           
+          images: 'marcostsantost/app-carteira-frontend:latest'

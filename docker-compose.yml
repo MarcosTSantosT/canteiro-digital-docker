@@ -2,6 +2,7 @@ services:
   # BANCO DE DADOS
   db:
     image: postgres:15
+    container_name: canteiro-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres_password
@@ -16,6 +17,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      container_name: canteiro-backend
     ports:
       - "5000:5000"
     environment:
@@ -29,7 +31,8 @@ services:
       - db
     volumes:
       - ./backend:/app
-    command: flask run --host=0.0.0.0 --port=5000
+    # Sobrescreve o CMD do Dockerfile para modo reload local
+    command: flask run --host=0.0.0.0 --port=5000 --reload
     networks:
       - app-net
 
@@ -38,12 +41,18 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      # Vai parar no primeiro estágio do Dockerfile (desenvolvimento)
+      target: dev-stage    
+    container_name: canteiro-frontend
+    volumes:
+      - ./frontend:/app     # Sincroniza código local com o container
+      - /app/node_modules   # Evita que o node_modules local sobrescreva o do container
     ports:
       - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules # Protege os pacotes do container
-    command: ["npm", "run", "dev", "--", "--host"]
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    # Comando para rodar o Vite em modo desenvolvimento com Hot Reload
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
     depends_on:
       - backend
     networks:
