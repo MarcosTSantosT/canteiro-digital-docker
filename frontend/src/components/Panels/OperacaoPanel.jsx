@@ -95,7 +95,7 @@ const SearchPanel = ({ onOperacaoSelecionada }) => {
     setIsLoadingProcessos(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/operacao/${dadosConvenio.convenio_siafi}/processos`);
+      const response = await fetch(`${API_URL}/api/operacao/${dadosConvenio.convenio_siafi}/processos`);
       
       if (!response.ok) {
         throw new Error('Erro ao buscar processos');
