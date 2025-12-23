@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'backend/**' # Só dispara se você mexer na pasta do backend
-workflow_dispatch: # Permite disparar o deploy manualmente pelo botão no GitHub
+  workflow_dispatch: # Permite disparar o deploy manualmente pelo botão no GitHub
 
 jobs:
   build-and-deploy:

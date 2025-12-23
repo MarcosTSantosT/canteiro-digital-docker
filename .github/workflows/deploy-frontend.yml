@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'frontend/**'
-workflow_dispatch: # Permite disparar o deploy manualmente pelo botão no GitHub
+  workflow_dispatch: # Permite disparar o deploy manualmente pelo botão no GitHub
 
 jobs:
   build-and-deploy:
@@ -31,7 +31,7 @@ jobs:
           # Injeta a URL do Backend no momento do Build
           build-args: |
             VITE_API_URL=https://app-canteiro-digital-backend.azurewebsites.net
-            
+
       - name: Azure Login
         uses: azure/login@v1
         with:
