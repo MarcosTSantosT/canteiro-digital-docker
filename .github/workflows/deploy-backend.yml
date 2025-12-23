@@ -22,7 +22,7 @@ jobs:
       - name: Build and push Backend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend        # Entra na pasta backend para o build
+          context: backend        # Entra na pasta backend para o build
           #file: ./backend/Dockerfile # Local do manual de instruções
           push: true
           tags: marcostsantost/app-carteira-backend:latest
