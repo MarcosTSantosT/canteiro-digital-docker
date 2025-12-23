@@ -84,6 +84,16 @@ class Config:
     # A base dados básicos costuma ter em torno 166 MB
     MAX_CONTENT_LENGTH = 500 * 1024 * 1024  # 500 MB
 
+
+    # ==========================================================================
+    # FORNTEND EM PRODUÇÃO OU LOCALHOST
+    # ==========================================================================
+    # Busca do ambiente, se não achar, usa o localhost como padrão
+    # No ambiente de produção, essa variável deve ser configurada para o URL do frontend !!
+    # O .env também tem essa variável para desenvolvimento local (FRONTEND_URL = http://localhost:5173)
+    FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:5173')
+
+
     # ==========================================================================
     # GOOGLE OAUTH
     # ==========================================================================

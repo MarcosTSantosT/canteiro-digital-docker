@@ -130,14 +130,17 @@ def auth_callback():
         state_in_session = session.get('oauth_state')
         state_in_request = request.args.get('state')
 
+        # Pega a URL centralizada na configuração do Flask
+        frontend_url = current_app.config.get('FRONTEND_URL')
+
         if not state_in_session or state_in_session != state_in_request:
-            return redirect("http://localhost:5173?error=invalid_state")
+            return redirect(f"{frontend_url}?error=invalid_state")
 
         session.pop('oauth_state', None)
 
         code = request.args.get('code')
         if not code:
-            return redirect("http://localhost:5173?error=no_code")
+            return redirect(f"{frontend_url}?error=no_code")
 
         import requests
 
@@ -205,11 +208,11 @@ def auth_callback():
 
         encoded_jwt = jwt.encode(payload, current_app.config["JWT_SECRET"], algorithm='HS256')
 
-        return redirect(f"http://localhost:5173/callback?token={encoded_jwt}")
+        return redirect(f"{frontend_url}/callback?token={encoded_jwt}")
 
     except Exception as e:
         print(f"Erro no login: {e}")
-        return redirect("http://localhost:5173?error=auth_failed")
+        return redirect(f"{frontend_url}?error=auth_failed")
 
 @bp.route("/api/auth/me")
 @jwt_required
