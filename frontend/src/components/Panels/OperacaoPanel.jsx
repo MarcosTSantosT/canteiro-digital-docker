@@ -6,7 +6,7 @@ import ProcessosModal from './ProcessosModal';
 import AlertsModal from './AtualizacoesModal';
 import './OperacaoPanel.css';
 
-import { API_URL } from '.../../services/api';
+import { API_URL } from '../../services/Api';
 
 const SearchPanel = ({ onOperacaoSelecionada }) => {
   const [valorBusca, setValorBusca] = useState('');
