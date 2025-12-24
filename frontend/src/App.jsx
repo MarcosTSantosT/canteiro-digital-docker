@@ -27,19 +27,16 @@ function AppContent() {
   const [comentarios, setComentarios] = useState([]);
 
 // --- NOVA LÓGICA DE CAPTURA DE TOKEN ---
-  useEffect(() => {
-    // Busca o token nos parâmetros da URL (?token=...)
+useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
 
     if (token) {
-      console.log("✅ Token de autenticação capturado!");
-      // Salva no localStorage para que o Api.js possa usar
       localStorage.setItem('jwt_token', token);
       
-      // Limpa a URL removendo o token da barra de endereços
-      // Isso evita que o token fique exposto e previne erros de reload
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // Em vez de apenas limpar a URL, redirecionamos para a raiz limpa
+      // Isso força o React a reiniciar já lendo o token do localStorage
+      window.location.href = "/"; 
     }
   }, []);
   // ---------------------------------------
