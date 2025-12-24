@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 import AuthProvider from './context/AuthProvider';
 import Header from './components/Header/Header';
@@ -25,6 +25,25 @@ function AppContent() {
   const [convenioSiafi, setConvenioSiafi] = useState(null);
   const [dadosOperacao, setDadosOperacao] = useState(null);
   const [comentarios, setComentarios] = useState([]);
+
+// --- NOVA LÓGICA DE CAPTURA DE TOKEN ---
+  useEffect(() => {
+    // Busca o token nos parâmetros da URL (?token=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+      console.log("✅ Token de autenticação capturado!");
+      // Salva no localStorage para que o Api.js possa usar
+      localStorage.setItem('jwt_token', token);
+      
+      // Limpa a URL removendo o token da barra de endereços
+      // Isso evita que o token fique exposto e previne erros de reload
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+  // ---------------------------------------
+
 
   const handleLeftCollapse = (collapsed) => {
     setIsLeftCollapsed(collapsed);

@@ -208,7 +208,7 @@ def auth_callback():
 
         encoded_jwt = jwt.encode(payload, current_app.config["JWT_SECRET"], algorithm='HS256')
 
-        return redirect(f"{frontend_url}/callback?token={encoded_jwt}")
+        return redirect(f"{frontend_url}/?token={encoded_jwt}")
 
     except Exception as e:
         print(f"Erro no login: {e}")

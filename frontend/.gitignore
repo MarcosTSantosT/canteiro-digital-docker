@@ -34,7 +34,7 @@ out/
 
 # Gatsby files (se migrar)
 .cache/
-public/
+#public/ # Contem o favicon, descomentar se quiser ignorar
 
 # ====== ENVIRONMENT VARIABLES ======
 # env files
