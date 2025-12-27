@@ -24,7 +24,7 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
   const [pageSize, setPageSize] = useState(50);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [usesBackendPagination, _setUsesBackendPagination] = useState(false);
+  const [usesBackendPagination, _setUsesBackendPagination] = useState(true);
 
   // Filtros avançados (checkboxes)
   const [advancedFilters, setAdvancedFilters] = useState({
@@ -99,48 +99,27 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
   };
 
   // ==========================================
-  // CARREGAR DADOS INICIAIS AO MONTAR COMPONENTE
+  // CARGA INICIAL REMOVIDA - dados só carregados ao aplicar filtros
   // ==========================================
-  useEffect(() => {
-    const loadInitialData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`${API_URL}/api/alteracoes`);
-        
-        if (!response.ok) {
-          throw new Error("Erro ao carregar dados iniciais");
-        }
 
-        const result = await response.json();
-        
-        // Backend pode retornar { dados: [], total: N } ou apenas [...]
-        const dataArray = Array.isArray(result) ? result : (result.dados || result.data || []);
-        const totalFromBackend = result.total || dataArray.length;
-
-        console.log('✅ Alterações carregadas:', dataArray.length, 'de', totalFromBackend, 'total');
-
-        setAlteracoesData(dataArray);
-        // NÃO seta filteredData - deixa useEffect de filtros fazer isso
-        setTotalRecords(totalFromBackend);
-        setTotalPages(Math.ceil(totalFromBackend / pageSize));
-        setCurrentPage(1);
-        
-      } catch (error) {
-        console.error("❌ Erro ao carregar dados iniciais:", error);
-        setAlteracoesData([]);
-        setTotalRecords(0);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadInitialData();
-  }, [pageSize]);  // ✅ ESLint: adicionado pageSize
 
   // ==========================================
   // APLICAR FILTROS (Coluna + Checkboxes + Data)
+  // DESABILITADO quando usa paginação backend
   // ==========================================
   useEffect(() => {
+    // Se usa paginação backend, não aplicar filtros locais
+    if (usesBackendPagination) {
+      // Apenas copiar os dados sem filtrar
+      if (alteracoesData && Array.isArray(alteracoesData)) {
+        setFilteredData(alteracoesData);
+      } else {
+        setFilteredData([]);
+      }
+      return;
+    }
+
+    // RESTO DO CÓDIGO ORIGINAL (para paginação local)
     if (!alteracoesData || !Array.isArray(alteracoesData)) {
       setFilteredData([]);
       return;
@@ -250,24 +229,6 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
   }, [filteredData, columnWidths]);
 
   // Funções de paginação
-  // ==========================================
-  // APLICAR FILTRO DE DATA
-  // ==========================================
-  const handleApplyDateFilter = () => {
-    // Os filtros de data já estão em dataInicio e dataFim
-    // O useEffect de filtros vai reagir automaticamente
-    console.log('📅 Aplicando filtro de data:', { dataInicio, dataFim });
-    
-    // Opcional: fechar filtros avançados após aplicar
-    // setShowAdvancedFilters(false);
-  };
-
-  const handleClearDateFilter = () => {
-    setDataInicio('');
-    setDataFim('');
-    console.log('🗑️ Limpando filtro de data');
-  };
-
   // Toggle de filtros avançados com scroll
   const handleToggleFilters = () => {
     setShowAdvancedFilters(!showAdvancedFilters);
@@ -283,16 +244,135 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
     }, 100);
   };
 
+  // ==========================================
+  // BUSCAR DADOS PARA UMA PÁGINA ESPECÍFICA
+  // ==========================================
+  const fetchDataForPage = async (pageNumber, customPageSize = null) => {
+    setIsLoading(true);
+
+    try {
+      // Preparar filtros (mesmos filtros que foram aplicados antes)
+      const backendFilters = {
+        page: pageNumber,
+        page_size: customPageSize || pageSize
+      };
+      
+      // Adicionar filtros de data
+      if (dataInicio) {
+        backendFilters.data_inicio = dataInicio;
+      }
+      if (dataFim) {
+        backendFilters.data_fim = dataFim;
+      }
+      
+      // Mapear checkboxes ativos
+      const activeFilters = Object.keys(advancedFilters).filter(key => advancedFilters[key]);
+      
+      if (activeFilters.length > 0) {
+        const tiposAlteracao = [];
+        
+        activeFilters.forEach(filter => {
+          switch(filter) {
+            case 'registros_inseridos':
+              tiposAlteracao.push('incluído');
+              tiposAlteracao.push('inserido');
+              break;
+            case 'registros_excluidos':
+              tiposAlteracao.push('excluído');
+              tiposAlteracao.push('removido');
+              break;
+            case 'atualizacoes_situacao_empreendimento':
+              tiposAlteracao.push('situação do contrato');
+              tiposAlteracao.push('situacao do empreendimento');
+              break;
+            case 'atualizacoes_situacao_obra':
+              tiposAlteracao.push('situação da obra');
+              tiposAlteracao.push('situacao_obra');
+              break;
+            case 'emissao_vrpl':
+              tiposAlteracao.push('vrpl');
+              break;
+            case 'emissao_aio':
+              tiposAlteracao.push('aio');
+              break;
+            case 'realizacao_vistoria':
+              tiposAlteracao.push('vistoria');
+              break;
+            case 'realizacao_desbloqueio':
+              tiposAlteracao.push('desbloqueio');
+              break;
+          }
+        });
+        
+        if (tiposAlteracao.length > 0) {
+          backendFilters.tipos_alteracao = tiposAlteracao;
+        }
+      }
+
+      // Adicionar filtros de coluna
+      if (colFilters.campo) {
+        backendFilters.campo = colFilters.campo;
+      }
+      if (colFilters.valor_antigo) {
+        backendFilters.valor_antigo = colFilters.valor_antigo;
+      }
+      if (colFilters.valor_novo) {
+        backendFilters.valor_novo = colFilters.valor_novo;
+      }
+      if (colFilters.municipio_beneficiado) {
+        backendFilters.municipio_beneficiado = colFilters.municipio_beneficiado;
+      }
+      if (colFilters.uf) {
+        backendFilters.uf = colFilters.uf;
+      }
+
+      console.log(`🔍 Buscando página ${pageNumber}:`, backendFilters);
+
+      const response = await fetch(`${API_URL}/api/atualizacoes_filtros_paginacao`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(backendFilters)
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao buscar dados da página');
+      }
+
+      const result = await response.json();
+      
+      console.log(`✅ Dados da página ${pageNumber} recebidos:`, result);
+
+      if (result.status === 'ok') {
+        const dados = result.dados || [];
+        setAlteracoesData(dados);
+        setFilteredData(dados);
+        setTotalRecords(result.total || 0);
+        setTotalPages(result.total_pages || 0);
+        setCurrentPage(result.page || pageNumber);
+      } else {
+        throw new Error(result.mensagem || 'Erro desconhecido');
+      }
+    } catch (error) {
+      console.error("❌ Erro ao buscar dados da página:", error);
+      alert("Erro ao buscar dados. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+      // Buscar dados da nova página no backend
+      fetchDataForPage(newPage);
     }
   };
 
   const handlePageSizeChange = (newSize) => {
     setPageSize(newSize);
-    setTotalPages(Math.ceil(totalRecords / newSize));
-    setCurrentPage(1);
+    // Buscar dados da página 1 com novo tamanho
+    fetchDataForPage(1, newSize);
   };
 
   const getPaginatedData = () => {
@@ -370,8 +450,14 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
     setShowAdvancedFilters(false);
 
     try {
+      // LOG DEBUG: Ver estado atual dos checkboxes
+      console.log('🔍 Estado dos checkboxes ao aplicar:', advancedFilters);
+      
       // Preparar filtros para enviar ao backend
-      const backendFilters = {};
+      const backendFilters = {
+        page: 1,  // Sempre começar na página 1 ao aplicar filtros
+        page_size: pageSize
+      };
       
       // Adicionar filtros de data
       if (dataInicio) {
@@ -391,28 +477,32 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
         activeFilters.forEach(filter => {
           switch(filter) {
             case 'registros_inseridos':
-              tiposAlteracao.push('insert', 'novo', 'criado');
+              tiposAlteracao.push('incluído');
+              tiposAlteracao.push('inserido');
               break;
             case 'registros_excluidos':
-              tiposAlteracao.push('delete', 'exclu', 'removido');
+              tiposAlteracao.push('excluído');
+              tiposAlteracao.push('removido');
               break;
             case 'atualizacoes_situacao_empreendimento':
-              tiposAlteracao.push('situacao_contrato', 'situacao_atual');
+              tiposAlteracao.push('situação do contrato');
+              tiposAlteracao.push('situacao do empreendimento');
               break;
             case 'atualizacoes_situacao_obra':
+              tiposAlteracao.push('situação da obra');
               tiposAlteracao.push('situacao_obra');
               break;
             case 'emissao_vrpl':
               tiposAlteracao.push('vrpl');
               break;
             case 'emissao_aio':
-              tiposAlteracao.push('aio', 'data_aio');
+              tiposAlteracao.push('aio');
               break;
             case 'realizacao_vistoria':
               tiposAlteracao.push('vistoria');
               break;
             case 'realizacao_desbloqueio':
-              tiposAlteracao.push('desbloqueio', 'desbloque');
+              tiposAlteracao.push('desbloqueio');
               break;
           }
         });
@@ -421,6 +511,25 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
           backendFilters.tipos_alteracao = tiposAlteracao;
         }
       }
+
+      // Adicionar filtros de coluna se preenchidos
+      if (colFilters.campo) {
+        backendFilters.campo = colFilters.campo;
+      }
+      if (colFilters.valor_antigo) {
+        backendFilters.valor_antigo = colFilters.valor_antigo;
+      }
+      if (colFilters.valor_novo) {
+        backendFilters.valor_novo = colFilters.valor_novo;
+      }
+      if (colFilters.municipio_beneficiado) {
+        backendFilters.municipio_beneficiado = colFilters.municipio_beneficiado;
+      }
+      if (colFilters.uf) {
+        backendFilters.uf = colFilters.uf;
+      }
+
+      console.log('🔍 Enviando filtros para backend:', backendFilters);
 
       const response = await fetch(`${API_URL}/api/atualizacoes_filtros_paginacao`, {
         method: "POST",
@@ -435,16 +544,26 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
       }
 
       const result = await response.json();
-      const dados = result.dados || result || [];
+      
+      console.log('✅ Resposta do backend:', result);
 
-      setAlteracoesData(dados);
-      setFilteredData(dados);
-      setTotalRecords(dados.length);
-      setTotalPages(Math.ceil(dados.length / pageSize));
-      setCurrentPage(1);
+      if (result.status === 'ok') {
+        const dados = result.dados || [];
+        setAlteracoesData(dados);
+        setFilteredData(dados);
+        setTotalRecords(result.total || 0);
+        setTotalPages(result.total_pages || 0);
+        setCurrentPage(result.page || 1);
+      } else {
+        throw new Error(result.mensagem || 'Erro desconhecido');
+      }
     } catch (error) {
-      console.error("Erro ao aplicar filtros:", error);
+      console.error("❌ Erro ao aplicar filtros:", error);
       alert("Erro ao buscar alterações filtradas. Tente novamente.");
+      setAlteracoesData([]);
+      setFilteredData([]);
+      setTotalRecords(0);
+      setTotalPages(0);
     } finally {
       setIsLoading(false);
     }
@@ -720,7 +839,10 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleApplyFilters();
+                  // Usar requestAnimationFrame para garantir que React atualizou o estado
+                  requestAnimationFrame(() => {
+                    handleApplyFilters();
+                  });
                 }}
                 style={{
                   padding: '0.5rem 1rem',
@@ -843,62 +965,6 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
                     />
                   </div>
                 </div>
-
-                {/* Botões de Filtro de Data */}
-                <div className="alteracoes-page-controls-wrapper">
-                  <button
-                    onClick={handleApplyDateFilter}
-                    disabled={!dataInicio && !dataFim}
-                    style={{
-                      padding: '0.5rem 1rem',
-                      background: (dataInicio || dataFim) ? '#10b981' : '#9ca3af',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      cursor: (dataInicio || dataFim) ? 'pointer' : 'not-allowed',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (dataInicio || dataFim) e.target.style.background = '#059669';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = (dataInicio || dataFim) ? '#10b981' : '#9ca3af';
-                    }}
-                  >
-                    ✓ Aplicar Período
-                  </button>
-                  
-                  <button
-                    onClick={handleClearDateFilter}
-                    disabled={!dataInicio && !dataFim}
-                    style={{
-                      padding: '0.5rem 1rem',
-                      background: 'white',
-                      color: '#6b7280',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '0.375rem',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      cursor: (dataInicio || dataFim) ? 'pointer' : 'not-allowed',
-                      transition: 'all 0.2s',
-                      opacity: (dataInicio || dataFim) ? 1 : 0.5
-                    }}
-                    onMouseEnter={(e) => {
-                      if (dataInicio || dataFim) {
-                        e.target.style.background = '#f3f4f6';
-                        e.target.style.color = '#374151';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'white';
-                      e.target.style.color = '#6b7280';
-                    }}
-                  >
-                    ✕ Limpar Datas
-                  </button>
-                </div>
               </div>
 
               {/* CHECKBOXES DE FILTROS */}
@@ -933,7 +999,7 @@ const AlteracoesTablePanel = ({ onSelectOperacao }) => {
 
           {/* TABELA DE RESULTADOS */}
           {isLoading ? (
-            <div className="alteracoes-loading">Carregando histórico...</div>
+            <div className="alteracoes-loading">Aplique os filtros para consultar sobre atualizações da base de dados</div>
           ) : filteredData.length === 0 ? (
             <div className="alteracoes-empty">
               Nenhuma alteração encontrada com os filtros aplicados

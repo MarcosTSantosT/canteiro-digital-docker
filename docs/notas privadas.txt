@@ -1,0 +1,16 @@
+As informações apresentadas na tela informações 
+1-Poderiam trazer o valor do investimento na tabela
+2-Poderiam ser cruzadas (join) com relevância ou processo possibilitando outros filtros
+3-Não deveria sair da base os excluídos (inclusive as informações sobre processos e comentários)
+4-As informações de relevância devem ser submetidas pelo usuário
+5-Os arquivos .css estão com sobreposições e dearticulados, especialmente o panel.css
+6-Frontend: implementações futuras: (i) loading states; (ii) alertas customizados; (iii) responsividade mobile
+
+
+
+
+
+
+
+Para passar grandes .csv do postgreSQL para o Supabase, usar no Powershell:
+$env:PGPASSWORD="postgres_password"; & "C:\Program Files\PostgreSQL\16\bin\psql.exe" -h db.aaegpxygkrxlcuzanpgz.supabase.co -p 6543 -U postgres -d postgres -c "\copy table_caixa_dados_basicos FROM 'C:/Users/User/Downloads/table_caixa_dados_basicos.csv' WITH CSV HEADER DELIMITER ',' ENCODING 'UTF8'"

@@ -5,11 +5,12 @@ from flask import current_app
 from sqlalchemy import create_engine
 import pandas as pd
 import os
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from sqlalchemy.types import Numeric, Date, Integer, SmallInteger, String
 from sqlalchemy.exc import SQLAlchemyError
 from math import ceil # usado na paginação
 import chardet
+
 
 # ==========================================
 # FUNÇÃO DE TESTE DE CONEXÃO COM O POSTGRESQL
@@ -228,6 +229,23 @@ def read_and_prepare_csv(csv_path: str) -> pd.DataFrame:
 # ============================================================
 # DEFINIÇÃO DE TIPOS DE CAMPOS (normalize_dataframe E build_dtype_map)
 # ============================================================
+
+NUMERIC_LIMITS = {
+    "percentual_fisico_informado": (10, 4),
+    "percentual_fisico_aferido": (10, 4),
+    "percentual_financeiro_desbloqueado": (10, 4),
+
+    "valor_repasse": (18, 2),
+    "valor_contrapartida": (18, 2),
+    "valor_investimento": (18, 2),
+    "valor_empenho": (18, 2),
+    "valor_desembolsado": (18, 2),
+    "valor_desbloqueado": (18, 2),
+    "valor_repasse_devolvido": (18, 2),
+    "valor_rendimento_devolvido": (18, 2),
+    "valor_autorizado_nao_pago": (18, 2),
+}
+
 DATE_COLS = [
     "data_assinatura", "data_publicacao_dou", "data_vigencia",
     "data_spa_homologacao", "data_vrpl", "data_aio",
@@ -290,7 +308,7 @@ def fix_mojibake(x):
 def to_date(x):
     if not x or pd.isna(x):
         return None
-    return pd.to_datetime(x, errors="coerce", dayfirst=True).date()
+    return pd.to_datetime(x, errors="coerce").date()
 
 
 def to_decimal(x):
@@ -300,7 +318,57 @@ def to_decimal(x):
         return Decimal(str(x).replace(".", "").replace(",", "."))
     except Exception:
         return None
+   
 
+def to_percent_0_100(x):
+    if x is None or pd.isna(x):
+        return None
+    try:
+        s = str(x).strip()
+        if s == "":
+            return None
+
+        # PT-BR → número
+        s = s.replace(".", "").replace(",", ".")
+        v = Decimal(s)
+
+        # regra do banco
+        if v < 0 or v > Decimal("999.99"):
+            return None
+
+        return v.quantize(Decimal("0.01"))
+    except (InvalidOperation, ValueError):
+        return None 
+
+def parse_ptbr_number(value):
+    if value in ("", None):
+        return None
+
+    if isinstance(value, (int, float, Decimal)):
+        return Decimal(value)
+
+    try:
+        v = (
+            str(value)
+            .strip()
+            .replace(".", "")   # remove separador de milhar
+            .replace(",", ".")  # vírgula → decimal
+        )
+        return Decimal(v)
+    except InvalidOperation:
+        return None
+
+def to_numeric_safe(value, precision, scale):
+    v = parse_ptbr_number(value)
+    if v is None:
+        return None
+
+    limite = Decimal(10) ** (precision - scale)
+
+    if abs(v) >= limite:
+        return None
+
+    return v.quantize(Decimal(10) ** -scale)
 
 def normalize_string(x):
     if not x or pd.isna(x):
@@ -322,8 +390,24 @@ def normalize_yes_no(x):
 
     return None
 
+def remover_convenios_duplicados(df: pd.DataFrame):
+    if "convenio_siafi" not in df.columns:
+        raise ValueError("Coluna convenio_siafi não encontrada no DataFrame")
 
-def normalize_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    total_antes = len(df)
+
+    df = df.drop_duplicates(
+        subset=["convenio_siafi"],
+        keep="first"   # ou "last"
+    )
+
+    removidos = total_antes - len(df)
+
+    return df, removidos
+
+
+def normalize_dataframe(df: pd.DataFrame):
+    problemas = []
 
     # -----------------------------------------------------
     # Normalização e filtro do convenio_siafi
@@ -368,30 +452,92 @@ def normalize_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     # -----------------------------------------------------
     for col in DATE_COLS:
         if col in df.columns:
+            valores_originais = df[col].copy()
+
             df[col] = df[col].map(to_date)
+
+            invalidos = valores_originais.notna() & df[col].isna()
+            if invalidos.any():
+                problemas.append(
+                    f"{col}: {invalidos.sum()} datas inválidas substituídas por NULL"
+                )
 
     # -----------------------------------------------------
     # Moedas e percentuais
     # -----------------------------------------------------
-    for col in MOEDA_COLS + PERCENT_COLS:
+    # -----------------------------------------------------
+    # Moedas
+    # -----------------------------------------------------
+    for col in MOEDA_COLS:
         if col in df.columns:
+            valores_originais = df[col].copy()
             df[col] = df[col].map(to_decimal)
+
+            invalidos = valores_originais.notna() & df[col].isna()
+            if invalidos.any():
+                problemas.append(
+                    f"{col}: {invalidos.sum()} valores monetários inválidos substituídos por NULL"
+                )
+
+    # -----------------------------------------------------
+    # Percentuais (CSV → fração)
+    # -----------------------------------------------------
+    for col in PERCENT_COLS:
+        if col in df.columns:
+            valores_originais = df[col].copy()
+            df[col] = df[col].map(to_percent_0_100)
+
+            invalidos = valores_originais.notna() & df[col].isna()
+            if invalidos.any():
+                problemas.append(
+                    f"{col}: {invalidos.sum()} percentuais inválidos substituídos por NULL"
+                )
 
     # -----------------------------------------------------
     # SIM / NÃO
     # -----------------------------------------------------
     for col in YES_NO_COLS:
         if col in df.columns:
+            valores_originais = df[col].copy()
+
             df[col] = df[col].map(normalize_yes_no)
+
+            invalidos = valores_originais.notna() & df[col].isna()
+            if invalidos.any():
+                problemas.append(
+                    f"{col}: {invalidos.sum()} valores inválidos (esperado SIM/NAO)"
+                )
 
     # -----------------------------------------------------
     # Strings genéricas
     # -----------------------------------------------------
     for col in STR_COLS:
         if col in df.columns:
+            valores_originais = df[col].copy()
+
             df[col] = df[col].map(normalize_string)
 
-    return df, linhas_removidas
+            invalidos = valores_originais.notna() & df[col].isna()
+            if invalidos.any():
+                problemas.append(
+                    f"{col}: {invalidos.sum()} strings vazias ou inválidas convertidas para NULL"
+                )
+    # Normalização segura de campos NUMERIC (PT-BR → Decimal)
+    for col, (precision, scale) in NUMERIC_LIMITS.items():
+        if col in df.columns:
+            original = df[col].copy()
+
+            df[col] = df[col].map(
+                lambda x: to_numeric_safe(x, precision, scale)
+            )
+
+            invalidos = original.notna() & df[col].isna()
+            if invalidos.any():
+                current_app.logger.warning(
+                    f"{col}: {invalidos.sum()} valores inválidos substituídos por NULL"
+                )
+
+    return df, linhas_removidas, problemas
 
 
 # ============================================================
@@ -411,7 +557,7 @@ def build_dtype_map(df: pd.DataFrame) -> dict:
 
     for col in PERCENT_COLS:
         if col in df.columns:
-            dtype_map[col] = Numeric(10, 4)
+            dtype_map[col] = Numeric(5, 2)
 
     for col in DATE_COLS:
         if col in df.columns:
@@ -436,11 +582,17 @@ def load_csv_with_diff_log():
     # LEITURA + NORMALIZAÇÃO
     # -----------------------------------------------------
     df = read_and_prepare_csv(CSV_FILE_PATH)
-    df, linhas_excluidas = normalize_dataframe(df)
+
+    df, duplicados = remover_convenios_duplicados(df)
+
+    current_app.logger.warning(
+        f"{duplicados} convênios com registros duplicados no CSV"
+    )
+        
+    df, linhas_excluidas, problemas = normalize_dataframe(df)
     dtype_map = build_dtype_map(df)
 
     engine = create_engine(DATABASE_URI)
-
     # -----------------------------------------------------
     # CARGA DA TABELA TEMP (STAGING)
     # -----------------------------------------------------
@@ -735,7 +887,8 @@ def load_csv_with_diff_log():
         "linhas_excluidas": linhas_excluidas, # Foram descartadas no upload convenio_siafi = 0
         "registros_novos": inclusoes,
         "registros_atualizados": alteracoes,
-        "registros_removidos": exclusoes
+        "registros_removidos": exclusoes,
+        "problemas_corrigidos": problemas
     }
 
 

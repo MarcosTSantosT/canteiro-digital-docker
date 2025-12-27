@@ -10,7 +10,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**🔗 Acesse em produção:** [www.enderecotemporario.com.br](http://www.enderecotemporario.com.br)
+**🔗 Acesse em produção:** [app-canteiro-digital.azurewebsites.net/](https://app-canteiro-digital.azurewebsites.net/)
 
 ---
 
@@ -210,7 +210,7 @@ Este projeto requer autenticação OAuth do Google. Siga os passos:
    - **Name:** APP Carteira Digital
    - **Authorized JavaScript origins:**
      - `http://localhost:5173` (desenvolvimento)
-     - `http://www.enderecotemporario.com.br` (produção)
+     - `https://app-canteiro-digital.azurewebsites.net/` (produção)
    - **Authorized redirect URIs:**
      - `http://localhost:5000/api/auth/callback` (desenvolvimento)
      - `http://www.enderecotemporario.com.br/api/auth/callback` (produção)
@@ -278,7 +278,7 @@ APPCARTEIRADIGITAL/
 │
 ├── backend/                      # Servidor Flask
 │   ├── app/                      # Aplicação principal
-│   │   ├── services/            # Camada de serviços
+│   │   ├── services/             # Camada de serviços
 │   │   │   ├── db1_service.py
 │   │   │   ├── db2_service.py
 │   │   │   ├── db3_service.py
@@ -299,7 +299,8 @@ APPCARTEIRADIGITAL/
 │   ├── config.py                # Configurações
 │   ├── Dockerfile
 │   ├── requirements.txt         # Dependências Python
-│   └── run.py                   # Entry point
+│   ├── run.py                   # Entry point localhost
+│   └── wsgi.py                  # Entry point produção
 │
 ├── frontend/                    # Aplicação React
 │   ├── public/
@@ -329,7 +330,7 @@ APPCARTEIRADIGITAL/
 │   │   ├── App.jsx             # Componente raiz
 │   │   ├── main.jsx            # Entry point
 │   │   └── index.css           # Estilos globais
-│   ├── .env                     # Variáveis de ambiente
+│   ├── .env                    # Variáveis de ambiente
 │   ├── .gitignore
 │   ├── Dockerfile
 │   ├── package.json            # Dependências Node
@@ -729,7 +730,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 **Marcos Tiburcio dos Santos Tabosa**
 - GitHub: [@MarcosTSantosT](https://github.com/MarcosTSantosT)
-- LinkedIn: [Adicionar link se desejar]
+- e-mail: [Marcos Tibúrcio dos Santos](marcos.tiburcio@uol.com.br)
 
 ---
 
@@ -746,17 +747,10 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 Para suporte, questões ou sugestões:
 
 - **Issues:** [GitHub Issues](https://github.com/MarcosTSantosT/APPCARTEIRADIGITAL/issues)
-- **Email:** [Adicionar email se desejar]
+- **Email:** [Marcos Tibúrcio dos Santos](marcos.tiburcio@uol.com.br)
 - **Documentação:** [Wiki do projeto](https://github.com/MarcosTSantosT/APPCARTEIRADIGITAL/wiki)
 
 ---
-
-## 🔗 Links Úteis
-
-- [Documentação da API](./docs/API.md) *(a criar)*
-- [Guia de Deploy](./docs/DEPLOY.md) *(a criar)*
-- [Changelog](./CHANGELOG.md) *(a criar)*
-- [Contributing Guide](./CONTRIBUTING.md) *(a criar)*
 
 ---
 
@@ -765,9 +759,9 @@ Para suporte, questões ou sugestões:
 ✅ **Em Produção**
 
 - **Ambiente:** Azure
-- **URL:** http://www.enderecotemporario.com.br
+- **URL:** https://app-canteiro-digital.azurewebsites.net/
 - **Status:** Online
-- **Última atualização:** Dezembro 2024
+- **Última atualização:** Dezembro 2025
 
 ---
 
@@ -776,16 +770,16 @@ Para suporte, questões ou sugestões:
 Para reportar vulnerabilidades de segurança, por favor:
 
 1. **NÃO** abra uma issue pública
-2. Envie um email para [seu-email-de-seguranca]
+2. Envie um email para [marcos.tiburcio@uol.com.br]
 3. Descreva a vulnerabilidade em detalhes
 4. Aguarde resposta em até 48h
 
 ---
 
 <p align="center">
-  Desenvolvido com ❤️ por <a href="https://github.com/MarcosTSantosT">Marcos Tiburcio</a>
+  Desenvolvido por <a href="https://github.com/MarcosTSantosT">Marcos Tiburcio</a>
 </p>
 
 <p align="center">
-  <sub>APP Carteira Digital © 2024</sub>
+  <sub>APP Carteira Digital © 2025</sub>
 </p>

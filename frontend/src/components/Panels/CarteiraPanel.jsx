@@ -18,7 +18,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [totalPages, setTotalPages] = useState(0);
-  const [usesBackendPagination, setUsesBackendPagination] = useState(false);
+  const [usesBackendPagination, setUsesBackendPagination] = useState(true);
 
   // Estados para comboboxes
   const [convenentes, setConvenentes] = useState([]);
@@ -281,6 +281,18 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
 
   // Aplicar filtros por coluna
   React.useEffect(() => {
+    // Se usa paginação backend, não aplicar filtros locais
+    if (usesBackendPagination) {
+      // Apenas copiar os dados sem filtrar
+      if (carteiraData && Array.isArray(carteiraData)) {
+        setFilteredData(carteiraData);
+      } else {
+        setFilteredData([]);
+      }
+      return;
+    }
+
+    // RESTO DO CÓDIGO ORIGINAL (para paginação local)
     if (!carteiraData || !Array.isArray(carteiraData)) {
       setFilteredData([]);
       return;
@@ -303,7 +315,7 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
     }
 
     setFilteredData(filtered);
-  }, [carteiraData, colFilters, sortColumn, sortDirection]);
+  }, [carteiraData, colFilters, sortColumn, sortDirection, usesBackendPagination]);
 
   // Recalcular totalRecords e totalPages quando filteredData mudar
   React.useEffect(() => {
@@ -334,41 +346,12 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
   }, [filteredData, columnWidths]);
 
   // ==========================================
-  // CARREGAR DADOS INICIAIS AO MONTAR COMPONENTE
+  // CARGA INICIAL REMOVIDA - dados só carregados ao aplicar filtros
   // ==========================================
-  useEffect(() => {
-    const loadInitialData = async () => {
-      setIsSearching(true);
-      try {
-        const response = await fetch(`${API_URL}/api/operacoes_base_completa`);
-        
-        if (!response.ok) {
-          throw new Error("Erro ao carregar dados iniciais");
-        }
-
-        const dados = await response.json();
-        const dataArray = Array.isArray(dados) ? dados : (dados.dados || dados.data || []);
-
-        setCarteiraData(dataArray);
-        setFilteredData(dataArray);  // ← CRÍTICO: Popular filteredData!
-        setTotalRecords(dataArray.length);
-        setTotalPages(Math.ceil(dataArray.length / pageSize));
-        setCurrentPage(1);
-        
-      } catch (error) {
-        console.error("Erro ao carregar dados iniciais:", error);
-        setCarteiraData([]);
-        setFilteredData([]);  // ← CRÍTICO: Limpar filteredData!
-      } finally {
-        setIsSearching(false);
-      }
-    };
-
-    loadInitialData();
-  }, [pageSize]);  // ✅ ESLint: adicionado pageSize
 
   // Buscar dados no backend
   const handleSearch = async () => {
+    console.log('🔍 Iniciando busca com filtros:', filters);
     setIsSearching(true);
     
     try {
@@ -1033,11 +1016,21 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
               placeholder="Busca livre por texto na database de empreendimentos"
               value={filters.objeto}
               onChange={(e) => handleFilterChange('objeto', e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  requestAnimationFrame(() => {
+                    handleSearch();
+                  });
+                }
+              }}
             />
             <button
               className="carteira-search-btn"
-              onClick={handleSearch}
+              onClick={() => {
+                requestAnimationFrame(() => {
+                  handleSearch();
+                });
+              }}
               disabled={isSearching}
             >
               {isSearching ? 'Buscando...' : 'Buscar'}
@@ -1082,7 +1075,9 @@ const CarteiraPanel = ({ onSelectOperacao }) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleSearch();
+                  requestAnimationFrame(() => {
+                    handleSearch();
+                  });
                 }}
                 disabled={isSearching}
                 style={{
